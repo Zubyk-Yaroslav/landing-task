@@ -9,6 +9,7 @@
   font-weight: 400;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.87);
+  box-sizing: border-box;
 
   &:focus,
   &:active {
@@ -92,6 +93,7 @@
     font-weight: 400;
     color: rgba(0, 0, 0, 0.87);
     font-size: 16px;
+    width: 100%;
 
     &::file-selector-button {
       border: 1px solid rgba(0, 0, 0, 0.87);

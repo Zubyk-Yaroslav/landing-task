@@ -6,8 +6,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 164px 0;
+    padding: 157px 12px;
     background-image: url(../../assets/images/hero-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .title {
@@ -18,7 +20,7 @@
     font-weight: 400;
     font-size: 40px;
     color: #ffffff;
-    margin-bottom: 21px;
+    margin-bottom: 26px;
     line-height: 1;
   }
 
