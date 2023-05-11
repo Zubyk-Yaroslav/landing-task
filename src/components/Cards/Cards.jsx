@@ -1,7 +1,7 @@
 import User from '../Card/Card.jsx';
 import '../../styles/main.scss';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../Button/Button.jsx';
 import Spinner from '../Spinner/Spinner.jsx';
 import './users.scss';
@@ -28,12 +28,19 @@ const mapDispatchToProps = (dispatch) => {
 
 const Users = (props) => {
   const { users, fetchUsers, handleUpdatePage, allPages } = props;
+  const [dataReceived, setDataReceived] = useState(false);
 
   useEffect(() => {
-    fetchUsers(users.pageLoad).then(() => {
-      allPages(users.total_pages);
-    });
-  }, [allPages, fetchUsers, users.pageLoad, users.total_pages]);
+    if (!dataReceived) {
+      fetchUsers(users.pageLoad).then(() => {
+        setDataReceived(true);
+      });
+    }
+  }, [dataReceived, fetchUsers, users.pageLoad]);
+
+  useEffect(() => {
+    allPages(users.users.length);
+  }, [users.users.length, allPages]);
 
   function handleLoadMoreClick() {
     const nextPage = users.pageLoad + 1;
@@ -68,7 +75,7 @@ Users.propTypes = {
   fetchUsers: PropTypes.func,
   fetchUsersSuccess: PropTypes.func,
   handleUpdatePage: PropTypes.func,
-  allPages: PropTypes.func,
+  allPages: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
