@@ -4,7 +4,7 @@
   align-items: center;
   box-sizing: content-box;
   width: 100%;
-  max-width: 328px;
+  max-width: 380px;
   margin: 0 auto;
 }
 
@@ -16,13 +16,7 @@
     }
   }
 
-  &__title {
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 40px;
-    line-height: 1;
-    color: rgba(0, 0, 0, 0.87);
+  h2 {
     margin: 0 0 50px 0;
   }
 }

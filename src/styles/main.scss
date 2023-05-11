@@ -1,7 +1,18 @@
 .container {
   width: 100%;
-  max-width: 930px;
-  padding: 0 13px;
+  max-width: 1024px;
+  padding: 0 12px;
   margin: 0 auto;
   box-sizing: border-box;
+}
+
+h2 {
+  margin-top: 10px;
+  margin-bottom: 50px;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+  color: rgba(0, 0, 0, 0.87);
+  line-height: 1;
 }

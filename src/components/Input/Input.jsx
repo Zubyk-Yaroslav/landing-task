@@ -1,26 +1,24 @@
 import PropTypes from 'prop-types';
 import './input.scss';
-import { forwardRef } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { forwardRef } from 'react';
 
 const Input = forwardRef((props, ref) => {
   const { id, label, type, className, nameInput, value, errors } = props;
+  const methods = useFormContext();
   const onChange = (event) => {
-    methods.setValue(nameInput, event.target.value);
+    if (event.target.value) {
+      methods.setValue(nameInput, event.target.value);
+    }
   };
 
-  const methods = useFormContext();
   return (
-    <label
-      className={`inputLabel ${(errors && 'error') || ''}`}
-      htmlFor={id}
-      id={id}
-    >
+    <label className={`inputLabel ${(errors && 'error') || ''}`} htmlFor={id}>
       <input
         className={className}
         type={type}
         id={id}
-        defaultValue={value}
+        value={value}
         onChange={onChange}
         name={id}
         ref={ref}
@@ -28,7 +26,7 @@ const Input = forwardRef((props, ref) => {
           required: `Your ${nameInput} is required`,
         })}
       />
-      {errors && <span className="error-msg">{errors?.message}</span>}
+      {errors && <span className="error-msg">{errors.message}</span>}
       <span className="floating-label">{label}</span>
     </label>
   );

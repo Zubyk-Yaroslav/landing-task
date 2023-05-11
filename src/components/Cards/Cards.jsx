@@ -1,53 +1,45 @@
 import User from '../Card/Card.jsx';
 import '../../styles/main.scss';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import Button from '../Button/Button.jsx';
 import Spinner from '../Spinner/Spinner.jsx';
 import './users.scss';
-const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [pageLoad, setPageLoad] = useState(1);
-  const [lastPage, setLastPage] = useState(false);
-  const [loading, setLoading] = useState(true);
+import { connect } from 'react-redux';
+import {
+  fetchUsers,
+  handleUpdatePage,
+  allPages,
+} from '../../redux/reducer.jsx';
+
+const mapStateToProps = (state) => {
+  return {
+    users: state,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUsers: (currentPage) => dispatch(fetchUsers(currentPage)),
+    handleUpdatePage: () => dispatch(handleUpdatePage()),
+    allPages: (obj) => dispatch(allPages(obj)),
+  };
+};
+
+const Users = (props) => {
+  const { users, fetchUsers, handleUpdatePage, allPages } = props;
 
   useEffect(() => {
-    const dataFetch = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `https://frontend-test-assignment-api.abz.agency/api/v1/users?page=${pageLoad}&count=6`
-        );
-        const usersData = response.data;
-        if (usersData.total_pages === pageLoad) {
-          setLastPage(true);
-        }
-
-        if (response.status) {
-          console.log('Users data loaded successfully.');
-          const sortedUsers = usersData.users.sort(
-            (objA, objB) =>
-              new Date(objB.registration_timestamp) -
-              new Date(objA.registration_timestamp)
-          );
-          setUsers((u) => [...u, ...sortedUsers]);
-          setLoading(false);
-        } else {
-          console.error('Failed to load users data.');
-        }
-      } catch (error) {
-        console.error('Error while loading users data:', error);
-      }
-    };
-
-    if (pageLoad > 1) {
-      dataFetch();
-    }
-  }, [pageLoad]);
+    fetchUsers(users.pageLoad).then(() => {
+      allPages(users.total_pages);
+    });
+  }, []);
 
   function handleLoadMoreClick() {
-    const newPageLoad = pageLoad + 1;
-    setPageLoad(newPageLoad);
+    const nextPage = users.pageLoad + 1;
+    fetchUsers(nextPage).then(() => {
+      handleUpdatePage();
+    });
   }
 
   return (
@@ -55,13 +47,13 @@ const Users = () => {
       <div className="container">
         <h2>Working with GET request</h2>
         <div className="users">
-          {users.map((user) => {
+          {users.users.map((user) => {
             return <User key={user.id} {...user} />;
           })}
         </div>
-        {loading ? (
+        {users.loading ? (
           <Spinner />
-        ) : !lastPage ? (
+        ) : !users.last_page ? (
           <Button text={'Load More'} onClick={handleLoadMoreClick} />
         ) : (
           ''
@@ -71,4 +63,12 @@ const Users = () => {
   );
 };
 
-export default Users;
+Users.propTypes = {
+  users: PropTypes.object,
+  fetchUsers: PropTypes.func,
+  fetchUsersSuccess: PropTypes.func,
+  handleUpdatePage: PropTypes.func,
+  allPages: PropTypes.func,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
