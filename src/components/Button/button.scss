@@ -1,0 +1,19 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4e041;
+  border-radius: 80px;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  border: none;
+  cursor: pointer;
+  padding: 4px 29px;
+
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+}

@@ -1,0 +1,69 @@
+.choosePosition {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: auto;
+  gap: 7px;
+  margin-bottom: 47px;
+
+  &__text {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    line-height: 1.6;
+    margin: 0 0 11px 0;
+  }
+
+  .radio-label {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #303030;
+    margin-right: 7px;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+
+  .inputRadio {
+    margin: 0;
+    visibility: hidden;
+  }
+
+  .inputRadio:checked + span {
+    border: 1px solid #00bdd3;
+  }
+
+  .inputRadio:checked + span:after {
+    opacity: 1;
+  }
+
+  .custom-radio {
+    left: -8px;
+    top: 6px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #d0cfcf;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+  }
+
+  /* for inner filled circle */
+  .custom-radio::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #00bdd3;
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}
