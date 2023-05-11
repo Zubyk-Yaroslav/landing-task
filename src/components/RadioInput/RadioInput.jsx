@@ -28,11 +28,11 @@ const RadioInput = ({
 };
 
 RadioInput.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   label: PropTypes.string,
   className: PropTypes.string,
   classLabel: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.number,
   checked: PropTypes.bool,
   onChange: PropTypes.func,
   methods: PropTypes.object,

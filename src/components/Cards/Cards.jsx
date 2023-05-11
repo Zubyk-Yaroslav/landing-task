@@ -10,8 +10,14 @@ const Users = () => {
   const [pageLoad, setPageLoad] = useState(1);
   const [lastPage, setLastPage] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(true);
+  const userLength = users.length;
 
   useEffect(() => {
+    if (userLength === 0) {
+      setLoaded(false);
+    }
+    if (loaded) return;
     const dataFetch = async () => {
       setLoading(true);
       try {
@@ -32,6 +38,7 @@ const Users = () => {
           );
           setUsers((u) => [...u, ...sortedUsers]);
           setLoading(false);
+          setLoaded(true);
         } else {
           console.error('Failed to load users data.');
         }
@@ -40,12 +47,11 @@ const Users = () => {
       }
     };
 
-    if (pageLoad > 1) {
-      dataFetch();
-    }
-  }, [pageLoad]);
+    dataFetch();
+  }, [pageLoad, loaded, userLength]);
 
   function handleLoadMoreClick() {
+    setLoaded(false);
     const newPageLoad = pageLoad + 1;
     setPageLoad(newPageLoad);
   }

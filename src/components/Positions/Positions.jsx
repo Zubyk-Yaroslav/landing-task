@@ -5,8 +5,14 @@ import { useFormContext } from 'react-hook-form';
 
 const Positions = () => {
   const [positions, setPositions] = useState([]);
+  const [loaded, setIsLoaded] = useState(true);
+  const positionLength = positions.length;
 
   useEffect(() => {
+    if (positionLength === 0) {
+      setIsLoaded(false);
+    }
+    if (loaded) return;
     const getPositions = async () => {
       try {
         const response = await fetch(
@@ -14,6 +20,7 @@ const Positions = () => {
         );
         if (response) {
           const data = await response.json();
+          console.log('Loaded');
           setPositions(data.positions);
         }
       } catch (error) {
@@ -21,7 +28,7 @@ const Positions = () => {
       }
     };
     getPositions();
-  }, []);
+  }, [loaded, positionLength]);
 
   const handlePositionChange = (event) => {
     methods.setValue('position_id', event.target.value);
