@@ -33,7 +33,7 @@ const Users = (props) => {
     fetchUsers(users.pageLoad).then(() => {
       allPages(users.total_pages);
     });
-  }, []);
+  }, [allPages, fetchUsers, users.pageLoad, users.total_pages]);
 
   function handleLoadMoreClick() {
     const nextPage = users.pageLoad + 1;
