@@ -20,7 +20,6 @@ const Positions = () => {
         );
         if (response) {
           const data = await response.json();
-          console.log('Loaded');
           setPositions(data.positions);
         }
       } catch (error) {

@@ -9,11 +9,28 @@ import axios from 'axios';
 import './form.scss';
 import { useEffect, useState } from 'react';
 import Image from '../Image/Image.jsx';
+import { connect } from 'react-redux';
+import { fetchUsers, fetchUsersSuccess } from '../../redux/reducer.jsx';
 
-const Form = () => {
+const mapStateToProps = (state) => {
+  return {
+    users: state,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUsers: (obj) => dispatch(fetchUsers(obj)),
+    fetchUsersSuccess: (obj) => dispatch(fetchUsersSuccess(obj)),
+  };
+};
+const Form = (props) => {
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const { fetchUsers, fetchUsersSuccess } = props;
+
   const methods = useForm();
   const {
+    register,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
@@ -31,12 +48,11 @@ const Form = () => {
     });
     return formData;
   };
-
   const onSubmit = async (data) => {
     const headers = {
       'Content-Type': 'multipart/form-data',
       Token:
-        'eyJpdiI6Iit5ZGpmOENGY3BMdmdrVWNrdTZiNXc9PSIsInZhbHVlIjoiNXdaVHFkdFc1TWtHZ3pOOHNjYlVFdUVmS2xtYnRCWGlLWEtOS0ZyVFpqa3RGV1RTbjE1eHdGN1lzaHNNYUtsWUxZeE9UMXJ4SENSamJhdWZIMG5hSHc9PSIsIm1hYyI6IjZkYTRiNDZkMzgxZTBlYzI1YTEzM2IwYTY1NTI5YzkyMTEyZjlkNGFlNTI1ZmYzMTk1NzMxYzAxODBhNWM3OTEifQ==',
+        'eyJpdiI6IjA5ZXorOHR3WDlndUJTcmJxMlh4Q1E9PSIsInZhbHVlIjoiM3ByOHBXUUlyZnRQR1lXelJTelBZXC9mMU1jSkU0eUtSVDlUamxWaG90cHljTm93MlRYWnhqTFIzc3BuSDNaTDBLYXI4NXJkcXlyK1RhdW5mZEZVWVpnPT0iLCJtYWMiOiJjYTEwYjdmYTFjMDk1ODVhMWJkYjAyZDFjOTM4Y2Q3Mzk3ZTU5M2YzNmY1NDQ2OGJjYzRlY2YyZjUxM2ZkZTBhIn0=',
       Authorization: '*',
     };
 
@@ -47,6 +63,8 @@ const Form = () => {
         { headers }
       );
       console.log(response.data);
+      fetchUsersSuccess([]);
+      fetchUsers();
     } catch (error) {
       console.error(error);
     }
@@ -63,9 +81,9 @@ const Form = () => {
   return (
     <div className="formSection">
       {isSubmitSuccessful ? (
-        <h2 className="formSection__title">Working with POST request</h2>
-      ) : (
         <h2 className="formSection__title">User successfully registered</h2>
+      ) : (
+        <h2 className="formSection__title">Working with POST request</h2>
       )}
 
       <div className="container">
@@ -83,22 +101,25 @@ const Form = () => {
                 className={`inputText ${(errors.name && 'error') || ''}`}
                 nameInput={'name'}
                 errors={errors.name}
+                {...register('name')}
               />
               <Input
                 id={'email'}
                 label={'Email'}
                 type={'text'}
-                className={`inputText ${(errors.name && 'error') || ''}`}
+                className={`inputText ${(errors.email && 'error') || ''}`}
                 nameInput={'email'}
-                errors={errors.name}
+                errors={errors.email}
+                {...register('email')}
               />
               <Input
                 id={'phone'}
                 label={'Phone'}
                 type={'tel'}
-                className={`inputText ${(errors.name && 'error') || ''}`}
+                className={`inputText ${(errors.phone && 'error') || ''}`}
                 nameInput={'phone'}
-                errors={errors.name}
+                errors={errors.phone}
+                {...register('phone')}
               />
               <Positions />
               <Input
@@ -106,7 +127,8 @@ const Form = () => {
                 type={'file'}
                 label={'Photo'}
                 nameInput={'photo'}
-                errors={errors.name}
+                errors={errors.photo}
+                {...register('photo')}
               />
               {isSubmitting ? (
                 <Spinner />
@@ -127,8 +149,10 @@ const Form = () => {
   );
 };
 
-Form.propTyped = {
+Form.propTypes = {
   user: PropTypes.object,
+  fetchUsers: PropTypes.func,
+  fetchUsersSuccess: PropTypes.func,
 };
 
-export default Form;
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
